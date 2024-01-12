@@ -1,20 +1,21 @@
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import { Sequelize } from "sequelize";
 
 dotenv.config();
 
 const {
-  DB_HOST = 'localhost',
-  DB_USER = 'root',
-  DB_PASSWORD_FILE = '/path/to/default/password/file',
-  DB_NAME = 'default_database',
+  DB_HOST = "localhost",
+  DB_USER = "postgres",
+  DB_PASSWORD_FILE = "/path/to/default/password/file",
+  DB_PASSWORD,
+  DB_NAME = "default_database",
 } = process.env;
 
 const sequelize = new Sequelize({
-  dialect: 'postgres',
+  dialect: "postgres",
   host: DB_HOST,
   username: DB_USER,
-  password: DB_PASSWORD_FILE,
+  password: DB_PASSWORD,
   database: DB_NAME,
 });
 
