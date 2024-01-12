@@ -8,7 +8,7 @@ const errorHandler = (
   next: NextFunction
 ) => {
   logger.error(`Erro: ${err.message}`);
-  res.status(500).json({ message: 'Erro interno do servidor' });
+  res.status(500).json({ error: 'Erro interno no servidor' });
 };
 
 export default errorHandler;
