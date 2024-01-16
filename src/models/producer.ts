@@ -1,69 +1,36 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/config';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-class Producer extends Model {
-  public id!: number;
-  public cpfCnpj!: string;
-  public nomeProdutor!: string;
-  public nomeFazenda!: string;
-  public cidade!: string;
-  public estado!: string;
-  public areaTotal!: number;
-  public areaAgricultavel!: number;
-  public areaVegetacao!: number;
-  public culturasPlantadas!: string[];
+@Entity("producers")
+class Producer extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id!: number;
+
+  @Column({ type: "varchar", length: 255, unique: true })
+  cpfCnpj!: string;
+
+  @Column({ type: "varchar", length: 255 })
+  nomeProdutor!: string;
+
+  @Column({ type: "varchar", length: 255 })
+  nomeFazenda!: string;
+
+  @Column({ type: "varchar", length: 255 })
+  cidade!: string;
+
+  @Column({ type: "varchar", length: 255 })
+  estado!: string;
+
+  @Column({ type: "float" })
+  areaTotal!: number;
+
+  @Column({ type: "float" })
+  areaAgricultavel!: number;
+
+  @Column({ type: "float" })
+  areaVegetacao!: number;
+
+  @Column("simple-array", { nullable: false })
+  culturasPlantadas!: string[];
 }
-
-Producer.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    cpfCnpj: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    nomeProdutor: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    nomeFazenda: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    cidade: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    estado: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    areaTotal: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    areaAgricultavel: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    areaVegetacao: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    culturasPlantadas: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    modelName: 'Producer',
-    tableName: 'producers',
-  }
-);
 
 export default Producer;

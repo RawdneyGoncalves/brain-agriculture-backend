@@ -1,12 +1,11 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import helmet from 'helmet';
-import sequelize from './config/config';
-import producerRoutes from './routes/producer';
-import errorHandler from './middleware/errorHandler';
-import logger from './utils/logger';
-import config from './config/config';
+import bodyParser from "body-parser";
+import cors from "cors";
+import express from "express";
+import helmet from "helmet";
+import { createConnection } from "typeorm";
+import errorHandler from "./middleware/errorHandler";
+import producerRoutes from "./routes/producer";
+import logger from "./utils/logger";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,13 +16,13 @@ app.use(bodyParser.json());
 
 (async () => {
   try {
-    await sequelize.sync();
-    logger.info('Conexão com o banco de dados estabelecida com sucesso');
+    await createConnection();
+    logger.info("Conexão com o banco de dados estabelecida com sucesso");
   } catch (error) {
-    console.error('Erro ao sincronizar o banco de dados:', error);
+    console.error("Erro ao conectar ao banco de dados:", error);
   }
 
-  app.use('/producers', producerRoutes);
+  app.use("/producers", producerRoutes);
 
   app.use(errorHandler);
 
@@ -32,6 +31,6 @@ app.use(bodyParser.json());
       logger.info(`Servidor iniciado na porta ${PORT}`);
     });
   } catch (error) {
-    console.error('Erro ao iniciar o servidor:', error);
+    console.error("Erro ao iniciar o servidor:", error);
   }
 })();

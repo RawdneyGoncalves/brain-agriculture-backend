@@ -1,64 +1,74 @@
-import Producer from '../models/producer';
-import logger from '../utils/logger';
-import { producerValidation } from '../utils/validation';
+import { DeleteResult, getRepository } from "typeorm";
+import Producer from "../models/producer";
+import logger from "../utils/logger";
 
 export const createProducer = async (data: any) => {
-    try {
-      return await Producer.create(data);
-    } catch (error: any) {
-      logger.error(error.message);
-      throw new Error('Erro ao criar produtor');
-    }
-  };
+  try {
+    const producerRepository = getRepository(Producer);
+    const producer = producerRepository.create(data);
+    return await producerRepository.save(producer);
+  } catch (error: any) {
+    logger.error(error.message);
+    throw new Error("Erro ao criar produtor");
+  }
+};
 
-  export const getProducers = async () => {
-    try {
-      return await Producer.findAll();
-    } catch (error: any) {
-      logger.error(error.message);
-      throw new Error('Erro ao obter produtores');
-    }
-  };
+export const getProducers = async () => {
+  try {
+    const producerRepository = getRepository(Producer);
+    return await producerRepository.find();
+  } catch (error: any) {
+    logger.error(error.message);
+    throw new Error("Erro ao obter produtores");
+  }
+};
 
-  export const getProducerById = async (id: string) => {
-    try {
-      return await Producer.findByPk(id);
-    } catch (error: any) {
-      logger.error(error.message);
-      throw new Error('Erro ao obter produtor por ID');
-    }
-  };
+export const getProducerById = async (id: string) => {
+  try {
+    const producerRepository = getRepository(Producer);
+    return await producerRepository.findOne({
+      where: { id: parseInt(id, 10) }, // Converta id para número, se necessário
+    });
+  } catch (error: any) {
+    logger.error(error.message);
+    throw new Error("Erro ao obter produtor por ID");
+  }
+};
 
-  
 export const updateProducer = async (id: string, data: any) => {
-    try {
-      const [rowsUpdated, [updatedProducer]] = await Producer.update(data, {
-        where: { id },
-        returning: true,
-      });
-  
-      if (rowsUpdated === 0) {
-        return null;
-      }
-  
-      return updatedProducer;
-    } catch (error: any) {
-      logger.error(error.message);
-      throw new Error('Erro ao atualizar produtor');
+  try {
+    const producerRepository = getRepository(Producer);
+    const existingProducer = await producerRepository.findOne({
+      where: { id: parseInt(id, 10) },
+    });
+
+    if (!existingProducer) {
+      return null;
     }
-  };
-  
-  export const deleteProducer = async (id: string) => {
-    try {
-      const rowsDeleted = await Producer.destroy({ where: { id } });
-  
-      if (rowsDeleted === 0) {
-        return null;
-      }
-  
-      return { id };
-    } catch (error: any) {
-      logger.error(error.message);
-      throw new Error('Erro ao excluir produtor');
+
+    producerRepository.merge(existingProducer, data);
+    return await producerRepository.save(existingProducer);
+  } catch (error: any) {
+    logger.error(error.message);
+    throw new Error("Erro ao atualizar produtor");
+  }
+};
+export const deleteProducer = async (
+  id: string
+): Promise<DeleteResult | null> => {
+  try {
+    const producerRepository = getRepository(Producer);
+    const existingProducer = await producerRepository.findOne({
+      where: { id: parseInt(id, 10) },
+    });
+
+    if (!existingProducer) {
+      return null;
     }
-  };
+
+    return await producerRepository.delete(existingProducer.id);
+  } catch (error: any) {
+    logger.error(error.message);
+    throw new Error("Erro ao excluir produtor");
+  }
+};
