@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import logger from '../utils/logger';
+import { NextFunction, Request, Response } from "express";
+import logger from "../utils/logger";
 
 const errorHandler = (
   err: Error,
@@ -8,7 +8,7 @@ const errorHandler = (
   next: NextFunction
 ) => {
   logger.error(`Erro: ${err.message}`);
-  res.status(500).json({ error: 'Erro interno no servidor' });
+  res.status(500).json({ error: "Erro interno no servidor" });
 };
 
 export default errorHandler;
