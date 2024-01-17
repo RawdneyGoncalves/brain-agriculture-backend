@@ -1,26 +1,25 @@
 import { cnpj, cpf } from "cpf-cnpj-validator";
-import Joi, { LanguageMessages } from "joi";
-const customMessages: LanguageMessages = {
-  "any.custom": "Invalid CPF or CNPJ",
-};
+import Joi from "joi";
 
 const CPF_LENGTH = 11;
+
+var customMessages = {
+  "string.empty": "O campo {{#label}} não pode estar vazio",
+  "any.required": "O campo {{#label}} é obrigatório",
+  "any.custom": "CPF ou CNPJ inválido",
+};
 
 export const producerValidation = Joi.object({
   cpfCnpj: Joi.string()
     .required()
     .custom((value, helpers) => {
-      const cleanedValue = value.replace(/\D/g, ""); // Remove caracteres não numéricos
-      const isValidCpfOrCnpj = (() =>
+      const cleanedValue = value.replace(/\D/g, "");
+      const isValidCpfOrCnpj =
         cleanedValue.length === CPF_LENGTH
           ? cpf.isValid(cleanedValue)
-          : cnpj.isValid(cleanedValue))();
+          : cnpj.isValid(cleanedValue);
 
-      if (!isValidCpfOrCnpj) {
-        return helpers.message({ "any.custom": customMessages["any.custom"] });
-      }
-
-      return cleanedValue; // Retorna o valor limpo, se a validação passar
+      return isValidCpfOrCnpj ? cleanedValue : helpers.error("any.custom");
     }),
   nomeProdutor: Joi.string().required(),
   nomeFazenda: Joi.string().required(),
