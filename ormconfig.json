@@ -7,8 +7,8 @@
   "database": "grain",
   "synchronize": true,
   "logging": true,
-  "entities": ["dist/entities/*.js"],
-  "migrations": ["dist/migrations/*.js"],
+  "entities": ["src/entities/*.ts"],
+  "migrations": ["src/migrations/*.ts"],
   "cli": {
     "entitiesDir": "src/entities",
     "migrationsDir": "src/migrations"
