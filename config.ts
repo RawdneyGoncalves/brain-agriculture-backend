@@ -10,7 +10,6 @@ const PostgresDataSource = new DataSource({
   database: "grain",
   synchronize: true,
   logging: true,
-  // entities: ["./src/entities/*.ts"],
   entities: [Producer],
   migrations: ["./src/migrations/*.ts"],
 });
