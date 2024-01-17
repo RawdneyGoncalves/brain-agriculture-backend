@@ -45,30 +45,11 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.put("/:id", async (req: Request, res: Response) => {
-  try {
-    const validatedData = await producerValidation.validateAsync(req.body);
-    const updatedProducer = await updateProducerController(req, res);
-    if (!updatedProducer) {
-      return res.status(404).json({ error: "Produtor não encontrado" });
-    }
-    res.status(200).json(updatedProducer);
-  } catch (error) {
-    console.error("Erro ao atualizar produtor:", error);
-    res.status(500).json({ error: "Erro ao atualizar produtor" });
-  }
+  await updateProducerController(req, res);
 });
 
 router.delete("/:id", async (req: Request, res: Response) => {
-  try {
-    const deletedProducer = await deleteProducerController(req, res);
-    if (!deletedProducer) {
-      return res.status(404).json({ error: "Produtor não encontrado" });
-    }
-    res.status(204).send();
-  } catch (error) {
-    console.error("Erro ao excluir produtor:", error);
-    res.status(500).json({ error: "Erro ao excluir produtor" });
-  }
+  return await deleteProducerController(req, res);
 });
 
 export default router;
