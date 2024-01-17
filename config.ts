@@ -1,4 +1,5 @@
 import { DataSource } from "typeorm";
+import Producer from "./src/models/producer";
 
 const PostgresDataSource = new DataSource({
   type: "postgres",
@@ -9,7 +10,17 @@ const PostgresDataSource = new DataSource({
   database: "grain",
   synchronize: true,
   logging: true,
-  entities: ["./src/entities/*.ts"],
+  // entities: ["./src/entities/*.ts"],
+  entities: [Producer],
   migrations: ["./src/migrations/*.ts"],
 });
+
+PostgresDataSource.initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization", err);
+  });
+
 export default PostgresDataSource;

@@ -1,6 +1,7 @@
+import { dirname } from "path";
 import { DataSource } from "typeorm";
 
-const PostgresDataSource = new DataSource({
+const AppDataSource = new DataSource({
   type: "postgres",
   host: "127.0.0.1",
   port: 5432,
@@ -9,7 +10,8 @@ const PostgresDataSource = new DataSource({
   database: "grain",
   synchronize: true,
   logging: true,
-  entities: ["../entities/*.ts"],
-  migrations: ["../migrations/*.ts"],
+  entities: [dirname + "../entities/*.ts"],
+  migrations: [dirname + "../migrations/*.ts"],
 });
-export default PostgresDataSource;
+
+export { AppDataSource };

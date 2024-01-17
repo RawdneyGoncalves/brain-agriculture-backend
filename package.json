@@ -9,10 +9,10 @@
     "create-database": "",
     "generate-migration": "",
     "sequelize": "npx sequelize-cli --config src/config/config.json --modelsPath src/models --migrationsPath src/migrations",
-    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./config.ts"
+    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./config.ts",
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./config.ts"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/cors": "^2.8.17",
@@ -27,7 +27,9 @@
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "joi": "^17.11.0",
+    "mysql": "^2.18.1",
     "pg": "^8.11.3",
+    "reflect-metadata": "^0.2.1",
     "ts-node": "^10.9.2",
     "typeorm": "^0.3.19",
     "typescript": "^5.3.3",

@@ -1,22 +1,29 @@
-import { DeleteResult, getRepository } from "typeorm";
+import PostgresDataSource from "../../config";
 import Producer from "../models/producer";
 import logger from "../utils/logger";
 
 export const createProducer = async (data: any) => {
-  try {
-    const producerRepository = getRepository(Producer);
-    const producer = producerRepository.create(data);
-    return await producerRepository.save(producer);
-  } catch (error: any) {
-    logger.error(error.message);
-    throw new Error("Erro ao criar produtor");
+  const manager = PostgresDataSource.manager;
+
+  const existsProducerCpfOrCnpj = await manager.findOneBy(Producer, {
+    cpfCnpj: data.cpfCnpj.replace(/\D/g, ""),
+  });
+
+  if (existsProducerCpfOrCnpj) {
+    throw new Error("Produtor já existente");
   }
+
+  const producer = await manager.create(Producer, data);
+
+  await manager.save(producer);
+
+  return producer;
 };
 
 export const getProducers = async () => {
   try {
-    const producerRepository = getRepository(Producer);
-    return await producerRepository.find();
+    const manager = PostgresDataSource.manager;
+    return await manager.find(Producer);
   } catch (error: any) {
     logger.error(error.message);
     throw new Error("Erro ao obter produtores");
@@ -25,9 +32,9 @@ export const getProducers = async () => {
 
 export const getProducerById = async (id: string) => {
   try {
-    const producerRepository = getRepository(Producer);
-    return await producerRepository.findOne({
-      where: { id: parseInt(id, 10) }, // Converta id para número, se necessário
+    const manager = PostgresDataSource.manager;
+    return await manager.findOne(Producer, {
+      where: { id: parseInt(id, 10) },
     });
   } catch (error: any) {
     logger.error(error.message);
@@ -37,8 +44,8 @@ export const getProducerById = async (id: string) => {
 
 export const updateProducer = async (id: string, data: any) => {
   try {
-    const producerRepository = getRepository(Producer);
-    const existingProducer = await producerRepository.findOne({
+    const manager = PostgresDataSource.manager;
+    const existingProducer = await manager.findOne(Producer, {
       where: { id: parseInt(id, 10) },
     });
 
@@ -46,19 +53,18 @@ export const updateProducer = async (id: string, data: any) => {
       return null;
     }
 
-    producerRepository.merge(existingProducer, data);
-    return await producerRepository.save(existingProducer);
+    manager.merge(Producer, existingProducer, data);
+    return await manager.save(Producer, existingProducer);
   } catch (error: any) {
     logger.error(error.message);
     throw new Error("Erro ao atualizar produtor");
   }
 };
-export const deleteProducer = async (
-  id: string
-): Promise<DeleteResult | null> => {
+
+export const deleteProducer = async (id: string): Promise<any> => {
   try {
-    const producerRepository = getRepository(Producer);
-    const existingProducer = await producerRepository.findOne({
+    const manager = PostgresDataSource.manager;
+    const existingProducer = await manager.findOne(Producer, {
       where: { id: parseInt(id, 10) },
     });
 
@@ -66,7 +72,11 @@ export const deleteProducer = async (
       return null;
     }
 
-    return await producerRepository.delete(existingProducer.id);
+    manager.delete(Producer, existingProducer.id);
+
+    await manager.save(Producer, existingProducer);
+
+    return existingProducer;
   } catch (error: any) {
     logger.error(error.message);
     throw new Error("Erro ao excluir produtor");
