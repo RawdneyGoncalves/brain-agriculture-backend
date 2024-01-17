@@ -11,16 +11,22 @@ import producerValidation from "../utils/validation";
 
 export const createProducerController = async (req: Request, res: Response) => {
   try {
-    const { error, value } = producerValidation.validate(req.body);
+    const { error, value } = producerValidation.validate(req.body, {
+      abortEarly: false,
+    });
+
     if (error) {
-      return res.status(400).json({ error: error.details[0].message });
+      const errorMessage = error.details
+        .map((detail) => detail.message)
+        .join(", ");
+      return res.status(400).json({ error: errorMessage });
     }
 
     const producer = await createProducer(value);
     res.status(201).json(producer);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erro ao criar produtor:", error);
-    res.status(500).json({ error: "Erro ao criar produtor" });
+    res.status(500).json({ error: `Erro ao criar produtor ${error.message}` });
   }
 };
 
@@ -62,11 +68,10 @@ export const updateProducerController = async (req: Request, res: Response) => {
     if (!updatedProducer) {
       return res.status(404).json({ error: "Produtor não encontrado" });
     }
-
-    res.status(200).json(updatedProducer);
+    return res.status(200).json(updatedProducer);
   } catch (error) {
     console.error("Erro ao atualizar produtor:", error);
-    res.status(500).json({ error: "Erro ao atualizar produtor" });
+    return res.status(500).json({ error: "Erro ao atualizar produtor" });
   }
 };
 
