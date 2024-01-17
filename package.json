@@ -10,7 +10,8 @@
     "generate-migration": "",
     "sequelize": "npx sequelize-cli --config src/config/config.json --modelsPath src/models --migrationsPath src/migrations",
     "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./config.ts",
-    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./config.ts"
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./config.ts",
+    "typeorm": "yarn typeorm schema:sync -d src/config/datasource.ts"
   },
   "keywords": [],
   "license": "ISC",
@@ -32,6 +33,7 @@
     "reflect-metadata": "^0.2.1",
     "ts-node": "^10.9.2",
     "typeorm": "^0.3.19",
+    "typeorm-extension": "^3.3.0",
     "typescript": "^5.3.3",
     "winston": "^3.11.0"
   },
