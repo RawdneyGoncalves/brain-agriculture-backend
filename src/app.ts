@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import errorHandler from "./middleware/errorHandler";
+import dashboardRoutes from "./routes/dashboard";
 import producerRoutes from "./routes/producer";
 import logger from "./utils/logger";
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 
 (async () => {
   app.use("/producers", producerRoutes);
+  app.use("/dashboard", dashboardRoutes);
 
   app.use(errorHandler);
 
