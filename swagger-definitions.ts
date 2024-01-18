@@ -5,7 +5,7 @@ const swaggerDefinition: OpenAPI.Document = {
   info: {
     title: "Brain Agriculture API",
     version: "1.0.0",
-    description: "API para gerenciar produtores agrícolas",
+    description: "API pra gerenciar produtores agrícolas",
   },
   paths: {
     "/producers": {
