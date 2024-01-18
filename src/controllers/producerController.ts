@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {
+  calculateTotalAgriculturalArea,
   createProducer,
   deleteProducer,
   getProducerById,
@@ -20,6 +21,18 @@ export const createProducerController = async (req: Request, res: Response) => {
         .map((detail) => detail.message)
         .join(", ");
       return res.status(400).json({ error: errorMessage });
+    }
+
+    const totalAgriculturalArea = calculateTotalAgriculturalArea(
+      value.areaAgricultavel,
+      value.areaVegetacao
+    );
+
+    if (totalAgriculturalArea > value.areaTotal) {
+      return res.status(400).json({
+        error:
+          "A soma de área agrícola e vegetação não pode ser maior que a área total da fazenda",
+      });
     }
 
     const producer = await createProducer(value);
@@ -62,6 +75,18 @@ export const updateProducerController = async (req: Request, res: Response) => {
     const { error } = producerValidation.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const totalAgriculturalArea = calculateTotalAgriculturalArea(
+      req.body.areaAgricultavel,
+      req.body.areaVegetacao
+    );
+
+    if (totalAgriculturalArea > req.body.areaTotal) {
+      return res.status(400).json({
+        error:
+          "A soma de área agrícola e vegetação não pode ser maior que a área total da fazenda",
+      });
     }
 
     const updatedProducer = await updateProducer(req.params.id, req.body);
