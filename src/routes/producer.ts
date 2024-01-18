@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import {
   createProducerController,
   deleteProducerController,
+  getDashboardDataController,
   getProducerByIdController,
   getProducersController,
   updateProducerController,
@@ -156,6 +157,16 @@ router.put("/:id", async (req: Request, res: Response) => {
  */
 router.delete("/:id", async (req: Request, res: Response) => {
   return await deleteProducerController(req, res);
+});
+
+router.get("/dashboard", async (_req: Request, res: Response) => {
+  try {
+    const dashboardData = await getDashboardDataController(_req, res);
+    res.status(200).json(dashboardData);
+  } catch (error) {
+    console.error("Erro ao obter dados do dashboard:", error);
+    res.status(500).json({ error: "Erro ao obter dados do dashboard" });
+  }
 });
 
 export default router;
