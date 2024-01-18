@@ -3,6 +3,19 @@ import { getDashboardDataController } from "../controllers/dashboardController";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /dashboard:
+ *   get:
+ *     summary: Obtém dados do dashboard
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Dados do dashboard obtidos com sucesso"
+ */
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const dashboardData = await getDashboardDataController(_req, res);

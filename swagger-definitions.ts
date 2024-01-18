@@ -193,6 +193,33 @@ const swaggerDefinition: OpenAPI.Document = {
         },
       },
     },
+    "/dashboard": {
+      get: {
+        summary: "Obtém dados do dashboard",
+        responses: {
+          200: {
+            description: "OK",
+            content: {
+              "application/json": {
+                example: {
+                  message: "Dados do dashboard obtidos com sucesso",
+                },
+              },
+            },
+          },
+          500: {
+            description: "Erro interno do servidor",
+            content: {
+              "application/json": {
+                example: {
+                  error: "Erro ao obter dados do dashboard",
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {

@@ -159,6 +159,19 @@ router.delete("/:id", async (req: Request, res: Response) => {
   return await deleteProducerController(req, res);
 });
 
+/**
+ * @swagger
+ * /dashboard:
+ *   get:
+ *     summary: Obtém dados do dashboard
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: "Dados do dashboard obtidos com sucesso"
+ */
 router.get("/dashboard", async (_req: Request, res: Response) => {
   try {
     const dashboardData = await getDashboardDataController(_req, res);
