@@ -89,3 +89,41 @@ export const calculateTotalAgriculturalArea = (
 ): number => {
   return areaAgricultavel + areaVegetacao;
 };
+
+export const getDashboardData = async () => {
+  try {
+    const manager = PostgresDataSource.manager;
+
+    // Total de fazendas em quantidade
+    const totalFazendas = await manager.count("Producer");
+
+    // Total de fazendas em hectares (área total)
+    const totalHectares = await manager.sum("Producer", "areaTotal");
+
+    // Gráfico de pizza por estado
+    const fazendasPorEstado = await manager.query(
+      'SELECT estado, COUNT(id) as quantidade FROM "Producer" GROUP BY estado' // Ajuste aqui
+    );
+
+    // Gráfico de pizza por cultura
+    const culturasPlantadas = await manager.query(
+      "SELECT UNNEST(culturasPlantadas) as cultura, COUNT(id) as quantidade FROM producers GROUP BY cultura"
+    );
+
+    // Gráfico de pizza por uso de solo (Área agricultável e vegetação)
+    const areaAgricultavel = await manager.sum(Producer, "areaAgricultavel");
+    const areaVegetacao = await manager.sum(Producer, "areaVegetacao");
+
+    return {
+      totalFazendas,
+      totalHectares,
+      fazendasPorEstado,
+      culturasPlantadas,
+      areaAgricultavel,
+      areaVegetacao,
+    };
+  } catch (error: any) {
+    logger.error(error.message);
+    throw new Error("Erro ao obter dados do dashboard");
+  }
+};
