@@ -9,6 +9,7 @@ import {
 import { producerValidation } from "../utils/validation";
 
 import { specs, swaggerUi } from "../../swagger";
+import { calculateTotalAgriculturalArea } from "../services/producerService";
 
 const router = express.Router();
 
@@ -86,6 +87,18 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", async (req: Request, res: Response) => {
   try {
     const validatedData = await producerValidation.validateAsync(req.body);
+    const totalAgriculturalArea = calculateTotalAgriculturalArea(
+      validatedData.areaAgricultavel,
+      validatedData.areaVegetacao
+    );
+
+    if (totalAgriculturalArea > validatedData.areaTotal) {
+      return res.status(400).json({
+        error:
+          "A soma de área agrícola e vegetação não pode ser maior que a área total da fazenda",
+      });
+    }
+
     const producer = await createProducerController(req, res);
     res.status(201).json(producer);
   } catch (error) {
