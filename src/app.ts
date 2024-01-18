@@ -28,3 +28,5 @@ app.use(bodyParser.json());
     console.error("Erro ao iniciar o servidor:", error);
   }
 })();
+
+export default app;
