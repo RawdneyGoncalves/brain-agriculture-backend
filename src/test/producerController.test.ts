@@ -1,10 +1,10 @@
-// src/test/producerController.test.ts
-
-import { expect } from "chai";
+import "jest";
 import request from "supertest";
 import app from "../app";
 
 describe("Producer Controller Tests", () => {
+  let producer_id: any;
+
   it("should create a new producer", async () => {
     const newProducer = {
       cpfCnpj: "14116763438",
@@ -23,9 +23,17 @@ describe("Producer Controller Tests", () => {
       .send(newProducer)
       .expect(201);
 
-    expect(response.body).to.have.property("id");
-    expect(response.body.nomeProdutor).to.equal(newProducer.nomeProdutor);
+    producer_id = response.body.id;
+    expect(response.body).toHaveProperty("id");
+    expect(response.body.cpfCnpj).toBe(newProducer.cpfCnpj);
   });
 
-  // Add more tests as needed
+  it("should delete a producer", async () => {
+    const response = await request(app)
+      .delete("/producers/" + producer_id)
+      .expect(200);
+
+    expect(response.body).toHaveProperty("id");
+    expect(response.body.cpfCnpj).toBe("14116763438");
+  });
 });
