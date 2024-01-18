@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import {
   createProducerController,
   deleteProducerController,
-  getDashboardDataController,
   getProducerByIdController,
   getProducersController,
   updateProducerController,
@@ -10,6 +9,7 @@ import {
 import { producerValidation } from "../utils/validation";
 
 import { specs, swaggerUi } from "../../swagger";
+import { getDashboardDataController } from "../controllers/dashboardController";
 import { calculateTotalAgriculturalArea } from "../services/producerService";
 
 const router = express.Router();

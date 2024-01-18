@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node", "@types/joi"],
+    "types": ["node", "@types/joi", "mocha"],
     "target": "es6",
     "module": "commonjs",
     "strict": true,
@@ -13,6 +13,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*.ts", "src/app.mjs"],
+  "include": ["src/**/*.ts", "src/app.mjs", "src/**/*.ts",
+  "src/test/**/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -95,32 +95,37 @@ export const getDashboardData = async () => {
     const manager = PostgresDataSource.manager;
 
     // Total de fazendas em quantidade
-    const totalFazendas = await manager.count("Producer");
+    const totalFazendas = await manager.count(Producer);
 
-    // Total de fazendas em hectares (área total)
-    const totalHectares = await manager.sum("Producer", "areaTotal");
+    // // // Total de fazendas em hectares (área total)
+    const totalHectares = await manager.sum(Producer, "areaTotal");
 
-    // Gráfico de pizza por estado
+    // // // Gráfico de pizza por estado
     const fazendasPorEstado = await manager.query(
       'SELECT estado, COUNT(id) as quantidade FROM "Producer" GROUP BY estado' // Ajuste aqui
     );
 
-    // Gráfico de pizza por cultura
-    const culturasPlantadas = await manager.query(
-      "SELECT UNNEST(culturasPlantadas) as cultura, COUNT(id) as quantidade FROM producers GROUP BY cultura"
-    );
+    // // // Gráfico de pizza por cultura
+    const producers = await manager.find(Producer);
 
-    // Gráfico de pizza por uso de solo (Área agricultável e vegetação)
+    let totalCulturasPlantadas = 0;
+
+    producers.forEach((producer) => {
+      const culturasPlantadas = producer.culturasPlantadas.length;
+      totalCulturasPlantadas += culturasPlantadas;
+    });
+
+    // // // Gráfico de pizza por uso de solo (Área agricultável e vegetação)
     const areaAgricultavel = await manager.sum(Producer, "areaAgricultavel");
     const areaVegetacao = await manager.sum(Producer, "areaVegetacao");
 
     return {
       totalFazendas,
-      totalHectares,
-      fazendasPorEstado,
-      culturasPlantadas,
-      areaAgricultavel,
-      areaVegetacao,
+      totalHectares: totalHectares ?? 0,
+      fazendasPorEstado: fazendasPorEstado ?? [],
+      culturasPlantadas: totalCulturasPlantadas,
+      areaAgricultavel: areaAgricultavel ?? 0,
+      areaVegetacao: areaVegetacao ?? 0,
     };
   } catch (error: any) {
     logger.error(error.message);
