@@ -82,3 +82,10 @@ export const deleteProducer = async (id: string): Promise<any> => {
     throw new Error("Erro ao excluir produtor");
   }
 };
+
+export const calculateTotalAgriculturalArea = (
+  areaAgricultavel: number,
+  areaVegetacao: number
+): number => {
+  return areaAgricultavel + areaVegetacao;
+};
