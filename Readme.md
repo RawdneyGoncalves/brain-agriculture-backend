@@ -1,69 +1,66 @@
-# Grain Agriculture Backend
+# Brain Agriculture API
 
-Este é o backend da aplicação Grain Agriculture, uma plataforma para gerenciamento de dados agrícolas.
+Bem-vindo à documentação da API do Brain Agriculture! Esta API foi desenvolvida para operações relacionadas a produtores na área de agricultura. Aqui você encontrará informações sobre a estrutura do projeto, configuração, execução, testes e exploração da API.
 
-## Início Rápido
+## Estrutura do Projeto
 
-### Pré-requisitos
+O projeto está organizado em pastas específicas, cada uma com uma responsabilidade distinta. Abaixo está uma visão geral das pastas principais:
 
-- Node.js e npm instalados
-- Docker instalado
-- Kubernetes (kubectl) instalado (opcional, para implantação no Kubernetes)
+- **config**: Configurações do banco de dados e da aplicação.
 
-### Instalação
+- **controllers**: Controladores para lidar com as requisições HTTP.
 
-1. Clone o repositório:
+- **middlewares**: Middlewares, como o de tratamento de erros.
 
-   ```bash
-   git clone https://github.com/RawdneyGoncalves/grain-agriculture-backend.git
+- **models**: Definição do modelo de dados da entidade `Producer`.
 
+- **routes**: Definição de rotas da API, incluindo configuração Swagger.
 
-## Instale as dependências:
+- **services**: Lógica de negócios relacionada aos produtores e ao dashboard.
 
-cd grain-agriculture-backend
-npm install
+- **swagger**: Configuração Swagger para documentação da API.
 
+- **test**: Arquivos de teste.
 
-## Crie um contêiner PostgreSQL com uma senha aleatória:
+- **utils**: Utilitários, incluindo validação e logger.
 
-docker run --name grain-agriculture-postgres -e POSTGRES_PASSWORD=$(openssl rand -base64 32 | tr -d '\n\r') -d -p 5432:5432 postgres:latest
+- **app.ts**: Ponto de entrada da aplicação.
 
+- **Dockerfile**: Arquivo Docker para criar a imagem da aplicação.
 
-## Crie um arquivo .env na raiz do projeto e adicione o seguinte:
+## Configuração do Banco de Dados
 
-DATABASE_URL=postgres://grain-agriculture:sua-senha-gerada@a-172.27.0.2:5432/grain-agriculture
+O arquivo `config.ts` contém as configurações do banco de dados para diferentes ambientes (desenvolvimento, teste e produção). Atualmente, está configurado para usar o PostgreSQL.
 
+## Rodando a Aplicação com Docker
 
+1. Certifique-se de ter o Docker instalado.
 
-### Substitua sua-senha-gerada pela senha gerada no passo anterior e a-host-do-seu-banco-de-dados pelo endereço do seu banco de dados.
+2. Navegue até o diretório do projeto no terminal.
 
-# executando a aplicação 
+3. Execute o comando para construir a imagem Docker:
 
-npm start
+    ```bash
+    docker build -t brain-agriculture-api .
+    ```
 
+4. Em seguida, inicie os contêineres:
 
-## Construa a imagem Docker:
+    ```bash
+    docker-compose up
+    ```
 
-docker build -t grain-agriculture-backend .
+5. A aplicação estará disponível em [http://localhost:4000](http://localhost:4000).
 
+## Documentação da API
 
-## Execute o contêiner Docker:
+A documentação da API é gerada usando Swagger. Acesse:
 
-docker run -p 3000:3000 -d grain-agriculture-backend
+- [http://localhost:4000/producers/docs](http://localhost:4000/producers/docs)
 
+## Testando a Aplicação
 
-## Implante a aplicação no Kubernetes:
+Certifique-se de ter o Node.js e o Yarn instalados. Execute o seguinte comando para executar os testes:
 
-kubectl apply -f kubernetes/deployment.yaml
-
-
-## Exponha o serviço:
-
-kubectl expose deployment grain-agriculture-backend --type=LoadBalancer --port=80 --target-port=3000
-
-
-# Testando 
-
-## Para executar os testes, utilize o seguinte comando:
-
-npm test
+```bash
+yarn test
