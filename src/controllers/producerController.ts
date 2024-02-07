@@ -46,10 +46,11 @@ export const createProducerController = async (req: Request, res: Response) => {
 export const getProducersController = async (_req: Request, res: Response) => {
   try {
     const producers = await getProducers();
-    res.status(200).json(producers);
+    return res.status(200).json(producers);
   } catch (error) {
-    console.error("Erro ao obter produtores:", error);
-    res.status(500).json({ error: "Erro ao obter produtores" });
+    return res.status(404).json({ 
+      error: "Erro ao obter produtores"
+    });
   }
 };
 
@@ -63,10 +64,10 @@ export const getProducerByIdController = async (
       return res.status(404).json({ error: "Produtor não encontrado" });
     }
 
-    res.status(200).json(producer);
+    return res.status(200).json(producer);
   } catch (error) {
     console.error("Erro ao obter produtor por ID:", error);
-    res.status(500).json({ error: "Erro ao obter produtor por ID" });
+    return res.status(500).json({ error: "Erro ao obter produtor por ID" });
   }
 };
 
@@ -110,6 +111,6 @@ export const deleteProducerController = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (error) {
     console.error("Erro ao excluir produtor:", error);
-    res.status(500).json({ error: "Erro ao excluir produtor" });
+    return res.status(500).json({ error: "Erro ao excluir produtor" });
   }
 };
