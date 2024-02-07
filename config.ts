@@ -4,10 +4,10 @@ import Producer from "./src/models/producer";
 const PostgresDataSource = new DataSource({
   type: "postgres",
   host: "localhost",
-  port: 5432,
+  port: 5433,
   username: "postgres",
-  password: "root",
-  database: "testR",
+  password: "grain",
+  database: "postgres",
   synchronize: true,
   logging: true,
   entities: [Producer],

@@ -56,7 +56,7 @@ O arquivo `config.ts` contém as configurações do banco de dados para diferent
 
 A documentação da API é gerada usando Swagger. Acesse:
 
-- [http://localhost:4000/producers/docs](http://localhost:4000/producers/docs)
+- [http://localhost:4000/prdoducers/docs](http://localhost:4000/producers/docs)
 
 ## Testando a Aplicação
 
