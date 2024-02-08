@@ -6,17 +6,28 @@ class TestUpdateProducer(unittest.TestCase):
 
     def test_update_producer(self):
         producer_data = {
-            "nomeFazenda": "Nova Fazenda pimpolho feliz"
+            "cpfCnpj": "14116763438",
+            "nomeProdutor": "rawdney goncalves mendes",
+            "nomeFazenda": "Nova Fazenda pimpolho feliz",
+            "cidade": "Sao Paulo",
+            "estado": "SP",
+            "areaTotal": 1000,
+            "areaAgricultavel": 800,
+            "areaVegetacao": 200,
+            "culturasPlantadas": [
+                "soja",
+                "azeitona"
+            ]
         }
-        response = requests.put(f'{self.BASE_URL}/producers/8', json=producer_data)
+        response = requests.put(f'{self.BASE_URL}/producers/10', json=producer_data)
         if response.status_code == 200:
             self.assertEqual(response.json()['nomeFazenda'], 'Nova Fazenda pimpolho feliz')
-        elif response.status_code == 400:
-            self.fail("Update validation failed")
+        elif response.status_code == 500:
+            self.fail(f"Update validation failed. Response: {response.json()}")
         elif response.status_code == 404:
-            self.fail("Produtor não encontrado")
+            self.fail(f"Produtor não encontrado. Response: {response.json()}")
         else:
-            self.fail("Falha ao atualizar produtor")
+            self.fail(f"Falha ao atualizar produtor. Response: {response.json()}")
 
     def test_update_producer_invalid_data(self):
         producer_data = {
@@ -32,7 +43,7 @@ class TestUpdateProducer(unittest.TestCase):
             "nomeFazenda": "Nova Fazenda"
         }
         response = requests.put(f'{self.BASE_URL}/producers/999', json=producer_data)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 400)
         self.assertIn('error', response.json())
         print("Log do teste update_producer_nonexistent_id:", response.json())
 

@@ -108,9 +108,10 @@ export const deleteProducerController = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Produtor não encontrado" });
     }
 
-    res.status(204).send();
+    return res.status(200).json({ message: "Produtor excluído com sucesso" });
   } catch (error) {
     console.error("Erro ao excluir produtor:", error);
     return res.status(500).json({ error: "Erro ao excluir produtor" });
   }
 };
+

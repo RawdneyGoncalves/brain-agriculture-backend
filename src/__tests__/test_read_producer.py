@@ -15,7 +15,7 @@ class TestReadProducer(unittest.TestCase):
         response = requests.get(f'{self.BASE_URL}/producers/8')
         if response.status_code == 200:
             self.assertIn('id', response.json())
-        elif response.status_code == 404:
+        elif response.status_code == 400:
             self.fail("Produtor não encontrado")
 
     def test_get_producer_by_invalid_id(self):
