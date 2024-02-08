@@ -9,7 +9,7 @@
     "generate-migration": "",
     "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./config.ts",
     "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./config.ts",
-    "typeorm": "yarn typeorm schema:sync -d src/config/datasource.ts", 
+    "typeorm": "yarn typeorm schema:sync -d src/config/datasource.ts",
     "install-python-dependencies": "pip install -r requirements.txt"
   },
   "keywords": [],
@@ -22,7 +22,7 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "cpf-cnpj-validator": "^1.0.3",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "express-openapi-validator": "^5.1.2",
     "helmet": "^7.1.0",

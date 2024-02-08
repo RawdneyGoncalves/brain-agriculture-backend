@@ -6,6 +6,9 @@ import errorHandler from "./middleware/errorHandler";
 import dashboardRoutes from "./routes/dashboard";
 import producerRoutes from "./routes/producer";
 import logger from "./utils/logger";
+import { specs, swaggerUi } from "../swagger";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -13,6 +16,9 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
+
+app.use("/producers/docs", swaggerUi.serve);
+app.get("/producers/docs", swaggerUi.setup(specs));
 
 (async () => {
   app.use("/producers", producerRoutes);
