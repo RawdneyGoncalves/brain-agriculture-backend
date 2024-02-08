@@ -60,7 +60,30 @@ A documentação da API é gerada usando Swagger. Acesse:
 
 ## Testando a Aplicação
 
-Certifique-se de ter o Node.js e o Yarn instalados. Execute o seguinte comando para executar os testes:
+Certifique-se de ter o Node.js Python instalados. Siga a documentação para realizar os testes: 
 
-```bash
-yarn test
+## Testes Python para a API RESTful
+
+Este repositório inclui conjuntos de testes em Python que podem ser usados para testar uma API RESTful. Os testes foram escritos usando a biblioteca `unittest` do Python e a biblioteca `requests` para fazer requisições HTTP para a API.
+
+### Estrutura dos Testes
+
+Os testes estão organizados em conjuntos para cada operação CRUD (Create, Read, Update, Delete) da API. Cada conjunto de testes aborda cenários específicos para garantir a funcionalidade correta da API em diferentes situações.
+
+- **Teste de Criação de Produtor**: Testa a criação de novos produtores.
+- **Teste de Exclusão de Produtor**: Testa a exclusão de produtores existentes.
+- **Teste de Leitura de Produtor**: Testa a leitura de produtores existentes.
+- **Teste de Atualização de Produtor**: Testa a atualização de produtores existentes.
+
+### Relação com a API RESTful
+
+Os testes em Python interagem diretamente com os endpoints da API RESTful. Aqui está como eles se relacionam com os endpoints da API:
+
+- **Teste de Criação de Produtor**: Verifica se a API pode criar um novo produtor com dados válidos e lidar corretamente com dados inválidos ou ausentes.
+- **Teste de Exclusão de Produtor**: Verifica se a API pode excluir um produtor existente e lidar com diferentes cenários, como IDs inválidos ou inexistentes.
+- **Teste de Leitura de Produtor**: Verifica se a API pode obter produtores existentes e lidar com diferentes casos, como IDs válidos, inválidos ou inexistentes.
+- **Teste de Atualização de Produtor**: Verifica se a API pode atualizar um produtor existente com dados válidos e lidar corretamente com dados inválidos, IDs inexistentes ou áreas totais inválidas.
+
+Esses testes fornecem uma maneira automatizada de garantir que a API funcione conforme o esperado e ajuda a identificar problemas rapidamente durante o desenvolvimento.
+
+ 
